@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Robot Selection{% endblock %}
+{% block content %}
+<span style="display: none;" id="robotListTemplate">
+    <a class="panel-block is-active">
+        <span class="panel-icon">
+            <i class="fas fa-robot" aria-hidden="true"></i>
+        </span>
+        <span id="robotName"></span>
+    </a>
+</span>
+<section class="section">
+    <article class="panel is-dark" id="robotSelectionList">
+        <p class="panel-heading">
+            Robot Selection
+        </p>
+        <div class="panel-block" id="robotSelectionProgress">
+            <progress class="progress is-small is-dark" max="100">Finding robots...</progress>
+        </div>
+        <div class="panel-block" id="noRobotFound" style="display: none">
+            No robots could be found. If you can, make sure the EV3s are switched on, connected to the network, and
+            running the connector program. <a onClick="window.location.reload()">Try again</a>
+        </div>
+    </article>
+</section>
+<script>
+
+    fetch('/static/templates/robotList.mustache')
+        .then((response) => response.text())
+        .then((template) => {
+            function handleRobotData(robots) {  
+                function renderTemplate(robotId, robotName) {
+                    var list = document.getElementById("robotSelectionList");
+                    var rendered = Mustache.render(template, { name: robotName, id: robotId });
+                    list.innerHTML += (rendered);
+                }
+                document.getElementById("robotSelectionList").querySelectorAll('.robot-list-item').forEach(e => e.remove());
+                if (robots.length == 0) {
+                    document.getElementById("robotSelectionProgress").style.display = "inherit";
+                    document.getElementById("noRobotFound").style.display = "inherit";
+                }
+                else {
+                    document.getElementById("robotSelectionProgress").style.display = "none";
+                    document.getElementById("noRobotFound").style.display = "none";
+                }
+                for (robot of robots) {
+                    renderTemplate(robot['id'], robot['name']);
+                }
+            }
+            function showRobots() {
+                fetch('{{ url_for("get_robots") }}')
+                    .then(response => response.json())
+                    .then(data => handleRobotData(data));
+            }
+            let timer = setInterval(showRobots, 1000)
+        });
+</script>
+{% endblock %}

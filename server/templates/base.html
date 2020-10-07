@@ -1,0 +1,58 @@
+<html>
+
+<head>
+
+    <title>{% block title %}Title Unset{% endblock %}</title>
+    {% block head_extra %}{% endblock %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/static/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
+    <script src="/static/js/mustache.min.js"></script>
+    <script src="/static/js/keydrown.min.js"></script>
+    <style>
+        .notification-container {
+
+            position: fixed;
+            z-index: 10;
+            width: 100%;
+            max-width: 100% !important;
+        }
+
+        @media only screen and (min-width: 768px) {
+            .notification-container {
+                padding-right: 25%;
+                padding-left: 25%
+            }
+        }
+    </style>
+</head>
+
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+    <div class="container notification-container">
+        <div class="is-{{category}} notification">
+            <button class="delete"></button>
+            {{message}}
+        </div>
+    </div>
+    {% endfor %}
+    {% endwith %}
+    {% include 'includes/header.html' %}
+    {% block content %} {% endblock %}
+    {% include 'includes/footer.html' %}
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+                var $notification = $delete.parentNode;
+
+                $delete.addEventListener('click', () => {
+                    $notification.parentNode.removeChild($notification);
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
