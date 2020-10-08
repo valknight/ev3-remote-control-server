@@ -24,7 +24,6 @@ function checkIfAlive() {
         })
 }
 function doControl() {
-    //console.log(activeControls);
     kd.tick();
     activeControls.forEach(function (item, index) {
         fetch(window.location.href, {
@@ -121,5 +120,7 @@ kd.RIGHT.up(function () {
 kd.DOWN.up(function () {
     releaseControl(get_control_from_keybind("ArrowDown"));
 });
+
 var controlPusher = setInterval(doControl, 20);
-var checkIfAliveInterval = setInterval(checkIfAlive, 300);
+// this is run on a seperate interval, as it's not necessary to be doing this check as frequently
+var checkIfAliveInterval = setInterval(checkIfAlive, 500);
