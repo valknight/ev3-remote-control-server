@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Robot Controller{% endblock %}
 {% block content %}
+<x-robot-id style="display: none;" id="x-robot-id">{{ robotId }}</x-robot-id>
 <x-controls style="display: none;" id='x-controls'>
     {{commandsJ}}</x-controls>
 <section class="section" style="text-align: center;">

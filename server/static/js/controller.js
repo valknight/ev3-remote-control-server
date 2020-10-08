@@ -1,5 +1,6 @@
 var controls = JSON.parse(document.getElementById('x-controls').innerHTML);
 var activeControls = [];
+var robotId = document.getElementsByName('x-robot-id').innerHTML;
 
 function is_touch_enabled() {
     return ('ontouchstart' in window) ||
@@ -13,7 +14,7 @@ function checkIfAlive() {
         .then(function (data) {
             found_robot = false;
             for (robot of data) {
-                if (String(robot.id) === "{{robotId}}") {
+                if (String(robot.id) === robotId) {
                     found_robot = true;
                 }
             }
