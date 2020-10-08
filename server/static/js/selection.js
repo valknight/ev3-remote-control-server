@@ -23,7 +23,7 @@ fetch('/static/templates/robotList.mustache')
             }
         }
         function showRobots() {
-            fetch('{{ url_for("get_robots") }}')
+            fetch('/get_robots')
                 .then(response => response.json())
                 .then(data => handleRobotData(data));
         }
