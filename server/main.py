@@ -1,7 +1,7 @@
 from flask import render_template, Flask, jsonify, session, redirect, request, url_for, flash
 from functools import wraps
 from random import randint
-from classes.robot import Robot
+from classes.robot import Robot, get_robot
 import json
 from config import robot_register_key, secret_key
 app = Flask(__name__)
@@ -35,11 +35,6 @@ def load_commands():
 load_commands()
 
 
-def get_robot(robotId: int):
-    for robot in robots:
-        if robot.getRobotId() == robotId and robot.isAlive():
-            return robot
-    return None
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -70,7 +65,7 @@ def commander(robotId):
         robotId = int(robotId)
     except ValueError:
         return jsonify({'success': False, 'msg': 'robotId must be int'})
-    r = get_robot(robotId)
+    r = get_robot(robots, robotId)
     if not r:
         flash('Robot with ID {} is not connected'.format(robotId), 'warning')
         return redirect(url_for('robot_selection'))
@@ -89,7 +84,7 @@ def handle_command(robotId):
         robotId = int(robotId)
     except ValueError:
         return jsonify({'success': False, 'msg': 'robotId must be int'}), 400
-    r = get_robot(robotId)
+    r = get_robot(robot, robotId)
     if r is None:
         return jsonify({'success': False, 'msg': 'No such robot with ID'}), 400
     commands = request.json
@@ -136,7 +131,7 @@ def add_robot():
             'success': False,
             'msg': 'robotName must be included'
         })
-    r = get_robot(robotId)
+    r = get_robot(robots, robotId)
     if not r:
         r = Robot(data.get('robotName'), robotId)
         robots.append(r)
