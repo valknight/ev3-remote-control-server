@@ -1,6 +1,6 @@
 var controls = JSON.parse(document.getElementById('x-controls').innerHTML);
 var activeControls = [];
-var robotId = document.getElementsByName('x-robot-id').innerHTML;
+var robotId = document.getElementById('x-robot-id').innerHTML;
 
 function is_touch_enabled() {
     return ('ontouchstart' in window) ||
