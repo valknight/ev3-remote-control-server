@@ -69,7 +69,7 @@ def commander(robotId):
     if not r:
         flash('Robot with ID {} is not connected'.format(robotId), 'warning')
         return redirect(url_for('robot_selection'))
-    return render_template('controller.html', robotId=robotId, robotName=r.robotName, commands=app.config['commands'], commandsJ=json.dumps(app.config['commands']))
+    return render_template('controller.html', robotId=robotId, robotName=r.robotName, commands=r.getCommands(), commandsJ=json.dumps(r.getCommands()))
 
 # TODO: rework this to be a endpoint to press a button, and an endpoint to release it\
 # Store the time the button was last held, and what button was held

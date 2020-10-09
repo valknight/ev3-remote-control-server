@@ -66,6 +66,7 @@ class Robot():
     def writeLog(self):
         with open('logs/{}-{}.log.json'.format(self.getRobotId(), self.getRobotName()), 'w') as f:
             f.write(json.dumps(self.commandLog))
+    
     def getCommands(self):
         return self.commands
     
