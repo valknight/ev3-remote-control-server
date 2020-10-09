@@ -12,9 +12,9 @@ This would not be possible, or at least as easily possible without the following
 
 - [ev3dev2-lang-python](https://github.com/ev3dev/ev3dev-lang-python)
 - [flask](https://flask.palletsprojects.com/)
-- [keydrown]()
-- [mustache.js]
-- [bulma]
+- [keydrown](https://jeremyckahn.github.io/keydrown/)
+- [mustache.js](https://github.com/janl/mustache.js/)
+- [bulma](https://bulma.io)
 
 ## Requirements
 The requirements are based off what has been used in testing. You may have luck running it on older versions of Python or an unsupported OS, but no guarantee!
