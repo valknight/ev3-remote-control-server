@@ -43,8 +43,8 @@ class Robot():
         for i in range(0, len(self.heldButtons)):
             if self.heldButtons[i].buttonCode == button.get('code'):
                 del self.heldButtons[i]
-        coords = button.get('coord_mod')
-        b = Button(button.get('code'), int(time.time()*1000), x=coords.get('x'), y=coords.get('y'), z=coords.get('z'))
+        coords = button.get('coord_mod', {})
+        b = Button(button.get('code'), int(time.time()*1000), x=coords.get('x', 0), y=coords.get('y', 0), z=coords.get('z', 0))
         self.heldButtons.append(b)
         self.commandLog.append(b.toDict())
         self.writeLog()
