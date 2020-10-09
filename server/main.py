@@ -84,7 +84,7 @@ def handle_command(robotId):
         robotId = int(robotId)
     except ValueError:
         return jsonify({'success': False, 'msg': 'robotId must be int'}), 400
-    r = get_robot(robot, robotId)
+    r = get_robot(robots, robotId)
     if r is None:
         return jsonify({'success': False, 'msg': 'No such robot with ID'}), 400
     commands = request.json
