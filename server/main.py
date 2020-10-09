@@ -69,7 +69,7 @@ def commander(robotId):
     if not r:
         flash('Robot with ID {} is not connected'.format(robotId), 'warning')
         return redirect(url_for('robot_selection'))
-    return render_template('controller.html', robotId=robotId, robotName=r.robotName, commands=app.config['commands'], commandsJ=json.dumps(app.config['commands']))
+    return render_template('controller.html', robotId=robotId, robotName=r.robotName, commands=r.getCommands(), commandsJ=json.dumps(r.getCommands()))
 
 # TODO: rework this to be a endpoint to press a button, and an endpoint to release it\
 # Store the time the button was last held, and what button was held
@@ -84,7 +84,7 @@ def handle_command(robotId):
         robotId = int(robotId)
     except ValueError:
         return jsonify({'success': False, 'msg': 'robotId must be int'}), 400
-    r = get_robot(robot, robotId)
+    r = get_robot(robots, robotId)
     if r is None:
         return jsonify({'success': False, 'msg': 'No such robot with ID'}), 400
     commands = request.json
@@ -103,10 +103,20 @@ def handle_command(robotId):
 
 @app.route('/get_robots')
 def get_robots():
-    robotDicts = []
-    for robot in robots:
-        if robot.isAlive():
-            robotDicts.append(robot.toDict())
+    while True:
+        robotDicts = []
+        deleted_robot = False
+        for i in range(0, len(robots)):
+            robot = robots[i]
+            if robot.isAlive():
+                robotDicts.append(robot.toDict())
+            else:
+                # This is done so if a robot reconnects with a different command set, it should have been removed by then
+                del robots[i]
+                deleted_robot = True
+                break
+        if not deleted_robot:
+            break
     return jsonify(robotDicts)
 
 
@@ -131,9 +141,12 @@ def add_robot():
             'success': False,
             'msg': 'robotName must be included'
         })
+    #TODO: Add check if the command data isn't formatted right, and return an error if so
     r = get_robot(robots, robotId)
     if not r:
-        r = Robot(data.get('robotName'), robotId)
+        #NOTE: In future, commands will be required from robots - this shim is just to allow for older testing scripts to still function
+        commands = data.get('commands', app.config['commands'])
+        r = Robot(data.get('robotName'), robotId, commands=commands)
         robots.append(r)
     r.alive()
     return jsonify(r.toDict())
