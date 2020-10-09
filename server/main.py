@@ -103,11 +103,20 @@ def handle_command(robotId):
 
 @app.route('/get_robots')
 def get_robots():
-    robotDicts = []
-    for robot in robots:
-        if robot.isAlive():
-            robotDicts.append(robot.toDict())
-        # TODO: If not alive, remove the robot!
+    while True:
+        robotDicts = []
+        deleted_robot = False
+        for i in range(0, len(robots)):
+            robot = robots[i]
+            if robot.isAlive():
+                robotDicts.append(robot.toDict())
+            else:
+                # This is done so if a robot reconnects with a different command set, it should have been removed by then
+                del robots[i]
+                deleted_robot = True
+                break
+        if not deleted_robot:
+            break
     return jsonify(robotDicts)
 
 
