@@ -101,6 +101,7 @@ class Robot():
         return {
             'name': self.getRobotName(),
             'id': self.getRobotId(),
+            'commands': self.getCommands(),
             'buttons': self.getHeldButtons(),
             'timeSinceLastConnection': self.timeSinceLastConnection(),
             'coords': self.getCoords()
