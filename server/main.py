@@ -107,6 +107,7 @@ def get_robots():
     for robot in robots:
         if robot.isAlive():
             robotDicts.append(robot.toDict())
+        # TODO: If not alive, remove the robot!
     return jsonify(robotDicts)
 
 
@@ -133,7 +134,8 @@ def add_robot():
         })
     r = get_robot(robots, robotId)
     if not r:
-        r = Robot(data.get('robotName'), robotId)
+        commands = data.get('commands', app.config['commands'])
+        r = Robot(data.get('robotName'), robotId, commands=commands)
         robots.append(r)
     r.alive()
     return jsonify(r.toDict())
