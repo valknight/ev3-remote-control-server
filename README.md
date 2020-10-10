@@ -12,9 +12,9 @@ This would not be possible, or at least as easily possible without the following
 
 - [ev3dev2-lang-python](https://github.com/ev3dev/ev3dev-lang-python)
 - [flask](https://flask.palletsprojects.com/)
-- [keydrown]()
-- [mustache.js]
-- [bulma]
+- [keydrown](https://jeremyckahn.github.io/keydrown/)
+- [mustache.js](https://github.com/janl/mustache.js/)
+- [bulma](https://bulma.io)
 
 ## Requirements
 The requirements are based off what has been used in testing. You may have luck running it on older versions of Python or an unsupported OS, but no guarantee!
@@ -44,4 +44,8 @@ The requirements are based off what has been used in testing. You may have luck 
 - `robot_timeout`
     - The amount of time a robot can go without communicating with the server before being marked inactive. Typically when an EV3 is connected over bluetooth, you see latency of around 150ms, so setting this around 500ms should be more than fine.
 
-Robot commands in future will be determined by the robots themselves, hence why that is not a configuration option here.
+To change the default commands, or see the command format expected by the server, open `commands.json`. The following terms are used:
+- `name`: Name shown for button in UI
+- `code`: Code sent to robot
+- `binding`: Keyboard binding for this command - if you do not want a keyboard binding, null this (but include it!)
+- `coord_mod`: contains x, y, and z params: can be left out if you do not want to use the target coord system, or if it isn't appropriate for this button
