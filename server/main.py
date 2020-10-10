@@ -143,10 +143,14 @@ def add_robot():
         })
     #TODO: Add check if the command data isn't formatted right, and return an error if so
     r = get_robot(robots, robotId)
+    #NOTE: In future, commands will be required from robots - this shim is just to allow for older testing scripts to still function
+    commands = data.get('commands', app.config['commands'])
     if not r:
-        #NOTE: In future, commands will be required from robots - this shim is just to allow for older testing scripts to still function
-        commands = data.get('commands', app.config['commands'])
+        
         r = Robot(data.get('robotName'), robotId, commands=commands)
         robots.append(r)
+    else:
+        if r.getCommands() != commands:
+            r.setCommands(commands)
     r.alive()
     return jsonify(r.toDict())
