@@ -1,5 +1,7 @@
 import json
 import time
+import errno
+import os
 from config import button_timeout, robot_timeout
 from classes.button import Button
 with open('commands.json', 'r') as f:
@@ -67,6 +69,11 @@ class Robot():
                 break
 
     def writeLog(self):
+        try:
+            os.makedirs('logs')
+        except OSError as e:
+            if e.errno != errno.EEXIST:
+                raise
         with open('logs/{}-{}.log.json'.format(self.getRobotId(), self.getRobotName()), 'w') as f:
             f.write(json.dumps(self.commandLog))
 
