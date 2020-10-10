@@ -6,13 +6,6 @@ with open('commands.json', 'r') as f:
     default_commands = json.loads(f.read())
 
 
-def get_robot(robots: list, robotId: int):
-    for robot in robots:
-        if robot.getRobotId() == robotId and robot.isAlive():
-            return robot
-    return None
-
-
 class Robot():
     def __init__(self, robotName, robotId, commands=default_commands):
         self.robotName = robotName
@@ -22,6 +15,13 @@ class Robot():
         self.heldButtons = []
         self.commandLog = []
         self.lastHeardFromTime = time.time() * 1000
+
+    @staticmethod
+    def get_robot(robots: list, robotId: int):
+        for robot in robots:
+            if robot.getRobotId() == robotId and robot.isAlive():
+                return robot
+        return None
 
     def markInUse(self):
         self.inUse = True

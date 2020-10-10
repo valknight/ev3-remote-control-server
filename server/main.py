@@ -1,7 +1,7 @@
 from flask import render_template, Flask, jsonify, session, redirect, request, url_for, flash
 from functools import wraps
 from random import randint
-from classes.robot import Robot, get_robot
+from classes.robot import Robot
 import json
 from config import robot_register_key, secret_key
 app = Flask(__name__)
@@ -35,8 +35,6 @@ def load_commands():
 load_commands()
 
 
-
-
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.form.get('code'):
@@ -65,7 +63,7 @@ def commander(robotId):
         robotId = int(robotId)
     except ValueError:
         return jsonify({'success': False, 'msg': 'robotId must be int'})
-    r = get_robot(robots, robotId)
+    r = Robot.get_robot(robots, robotId)
     if not r:
         flash('Robot with ID {} is not connected'.format(robotId), 'warning')
         return redirect(url_for('robot_selection'))
@@ -76,7 +74,10 @@ def commander(robotId):
 # If a button has been held for over a second without another request from the web controller, we forcefully release the button.
 # This allows us to build an endpoint for a robot-bluetooth bridge to get the currently held buttons of a robot
 
+
 command_log = []
+
+
 @app.route('/command/<robotId>', methods=['POST'])
 @code_required
 def handle_command(robotId):
@@ -84,7 +85,7 @@ def handle_command(robotId):
         robotId = int(robotId)
     except ValueError:
         return jsonify({'success': False, 'msg': 'robotId must be int'}), 400
-    r = get_robot(robots, robotId)
+    r = Robot.get_robot(robots, robotId)
     if r is None:
         return jsonify({'success': False, 'msg': 'No such robot with ID'}), 400
     commands = request.json
@@ -141,12 +142,11 @@ def add_robot():
             'success': False,
             'msg': 'robotName must be included'
         })
-    #TODO: Add check if the command data isn't formatted right, and return an error if so
-    r = get_robot(robots, robotId)
-    #NOTE: In future, commands will be required from robots - this shim is just to allow for older testing scripts to still function
+    # TODO: Add check if the command data isn't formatted right, and return an error if so
+    r = Robot.get_robot(robots, robotId)
+    # NOTE: In future, commands will be required from robots - this shim is just to allow for older testing scripts to still function
     commands = data.get('commands', app.config['commands'])
     if not r:
-        
         r = Robot(data.get('robotName'), robotId, commands=commands)
         robots.append(r)
     else:
