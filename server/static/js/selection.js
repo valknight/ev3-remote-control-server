@@ -1,5 +1,3 @@
-
-
 fetch('/static/templates/robotList.mustache')
     .then((response) => response.text())
     .then((template) => {
@@ -13,8 +11,7 @@ fetch('/static/templates/robotList.mustache')
             if (robots.length == 0) {
                 document.getElementById("robotSelectionProgress").style.display = "inherit";
                 document.getElementById("noRobotFound").style.display = "inherit";
-            }
-            else {
+            } else {
                 document.getElementById("robotSelectionProgress").style.display = "none";
                 document.getElementById("noRobotFound").style.display = "none";
             }
@@ -22,8 +19,9 @@ fetch('/static/templates/robotList.mustache')
                 renderTemplate(robot['id'], robot['name']);
             }
         }
+
         function showRobots() {
-            fetch('/get_robots')
+            fetch('/robot/list')
                 .then(response => response.json())
                 .then(data => handleRobotData(data));
         }

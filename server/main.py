@@ -8,6 +8,10 @@ import logging
 logging.basicConfig(filename=logname, level=logging.DEBUG,
                     format=f'%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
 app = Flask(__name__)
+# Attach blueprints
+from server.blueprints.robot import robot
+app.register_blueprint(robot)
+logging.info("Registered robot blueprint")
 app.secret_key = secret_key
 robots = []
 
@@ -66,7 +70,7 @@ def commander(robotId):
         robotId = int(robotId)
     except ValueError:
         return jsonify({'success': False, 'msg': 'robotId must be int'})
-    r = Robot.get_robot(robots, robotId)
+    r = Robot.get_robot(robotId)
     if not r:
         flash('Robot with ID {} is not connected'.format(robotId), 'warning')
         return redirect(url_for('robot_selection'))
@@ -88,7 +92,7 @@ def handle_command(robotId):
         robotId = int(robotId)
     except ValueError:
         return jsonify({'success': False, 'msg': 'robotId must be int'}), 400
-    r = Robot.get_robot(robots, robotId)
+    r = Robot.get_robot(robotId)
     if r is None:
         return jsonify({'success': False, 'msg': 'No such robot with ID'}), 400
     # TODO: Add lock checks for robots!
@@ -105,58 +109,3 @@ def handle_command(robotId):
         'command': command,
         'sent_to_client': True})
 
-
-@app.route('/get_robots')
-def get_robots():
-    while True:
-        robotDicts = []
-        deleted_robot = False
-        for i in range(0, len(robots)):
-            robot = robots[i]
-            if robot.isAlive():
-                robotDicts.append(robot.toDict())
-            else:
-                # This is done so if a robot reconnects with a different command set, it should have been removed by then
-                del robots[i]
-                deleted_robot = True
-                break
-        if not deleted_robot:
-            break
-    return jsonify(robotDicts)
-
-# TODO: Add robot pairing process, instead of hacky system of having a "key"
-
-
-@app.route('/robot', methods=['POST'])
-def add_robot():
-    data = json.loads(request.json)
-    if data.get('robotKey') != robot_register_key:
-        print(data.get('robotKey'))
-        return jsonify({
-            'success': False,
-            'msg': 'Invalid robot registration key'
-        })
-    try:
-        robotId = int(data.get('robotId', 'noId'))
-    except ValueError:
-        return jsonify({
-            'success': False,
-            'msg': 'robotId must be int'
-        })
-    if not data.get('robotName'):
-        return jsonify({
-            'success': False,
-            'msg': 'robotName must be included'
-        })
-    # TODO: Add check if the command data isn't formatted right, and return an error if so
-    r = Robot.get_robot(robots, robotId)
-    # NOTE: In future, commands will be required from robots - this shim is just to allow for older testing scripts to still function
-    commands = data.get('commands', app.config['commands'])
-    if not r:
-        r = Robot(data.get('robotName'), robotId, commands=commands)
-        robots.append(r)
-    else:
-        if r.getCommands() != commands:
-            r.setCommands(commands)
-    r.alive()
-    return jsonify(r.toDict())

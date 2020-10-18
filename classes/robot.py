@@ -6,6 +6,7 @@ from config import button_timeout, robot_timeout
 from classes.button import Button
 with open('commands.json', 'r') as f:
     default_commands = json.loads(f.read())
+robots = []
 
 
 class Robot():
@@ -19,11 +20,33 @@ class Robot():
         self.lastHeardFromTime = time.time() * 1000
 
     @staticmethod
-    def get_robot(robots: list, robotId: int):
+    def get_robot(robotId: int):
         for robot in robots:
             if robot.getRobotId() == robotId and robot.isAlive():
                 return robot
         return None
+
+    @staticmethod
+    def add_robot(robot):
+        robots.append(robot)
+
+    @staticmethod
+    def get_robot_list_as_dict():
+        while True:
+            robotDicts = []
+            deleted_robot = False
+            for i in range(0, len(robots)):
+                robot = robots[i]
+                if robot.isAlive():
+                    robotDicts.append(robot.toDict())
+                else:
+                    # This is done so if a robot reconnects with a different command set, it should have been removed by then
+                    del robots[i]
+                    deleted_robot = True
+                    break
+            if not deleted_robot:
+                break
+        return robotDicts
 
     def markInUse(self):
         self.inUse = True
@@ -66,7 +89,6 @@ class Robot():
                 delay = time.time()*1000 - button.pushTime
                 if delay >= button_timeout:
                     del self.heldButtons[i]
-                    print("!!")
                     hasRemoved = True
             if not hasRemoved:
                 break

@@ -9,9 +9,9 @@ function is_touch_enabled() {
 }
 
 function checkIfAlive() {
-    fetch('/get_robots', { method: 'GET' })
+    fetch('/robot/list', { method: 'GET' })
         .then(response => response.json())
-        .then(function (data) {
+        .then(function(data) {
             found_robot = false;
             for (robot of data) {
                 if (String(robot.id) === robotId) {
@@ -23,9 +23,10 @@ function checkIfAlive() {
             }
         })
 }
+
 function doControl() {
     kd.tick();
-    activeControls.forEach(function (item, index) {
+    activeControls.forEach(function(item, index) {
         fetch(window.location.href, {
             method: 'POST',
             headers: {
@@ -52,6 +53,7 @@ function addControl(commandCode) {
         activeControls.push(commandCode);
     }
 }
+
 function releaseControl(commandCode) {
     const index = activeControls.indexOf(commandCode);
     if (index > -1) {
@@ -60,9 +62,9 @@ function releaseControl(commandCode) {
 }
 // this deals with when a user clicks on a button
 
-document.body.onmousedown = function (evt) {
+document.body.onmousedown = function(evt) {
     if (evt.target.attributes.command !== undefined) {
-        controls.forEach(function (item, index) {
+        controls.forEach(function(item, index) {
             if (evt.target.attributes.command.value == item.code) {
                 addControl(item);
             }
@@ -71,9 +73,9 @@ document.body.onmousedown = function (evt) {
 }
 
 // handles user touching a button
-document.body.ontouchstart = function (evt) {
+document.body.ontouchstart = function(evt) {
     if (evt.target.attributes.command !== undefined) {
-        controls.forEach(function (item, index) {
+        controls.forEach(function(item, index) {
             if (evt.target.attributes.command.value == item.code) {
                 addControl(item);
             }
@@ -82,42 +84,42 @@ document.body.ontouchstart = function (evt) {
 }
 
 // handles a user lifting their finger from a button
-document.body.ontouchend = function (evt) {
+document.body.ontouchend = function(evt) {
     if (evt.target.attributes.command !== undefined) {
         releaseControl(evt.target.attributes.command.value);
     }
 }
 
 // handles a user unclicking (? is that a word) a button
-document.body.onmouseup = function (evt) {
+document.body.onmouseup = function(evt) {
     if (evt.target.attributes.command !== undefined) {
         releaseControl(evt.target.attributes.command.value);
         activeControls = [];
     }
 }
-kd.UP.down(function () {
+kd.UP.down(function() {
     addControl(get_control_from_keybind("ArrowUp"));
 });
-kd.DOWN.down(function () {
+kd.DOWN.down(function() {
     addControl(get_control_from_keybind("ArrowDown"));
 });
-kd.LEFT.down(function () {
+kd.LEFT.down(function() {
     addControl(get_control_from_keybind("ArrowLeft"));
 });
-kd.RIGHT.down(function () {
+kd.RIGHT.down(function() {
     addControl(get_control_from_keybind("ArrowRight"));
 });
 // manage releasing of controls
-kd.UP.up(function () {
+kd.UP.up(function() {
     releaseControl(get_control_from_keybind("ArrowUp"));
 });
-kd.LEFT.up(function () {
+kd.LEFT.up(function() {
     releaseControl(get_control_from_keybind("ArrowLeft"));
 });
-kd.RIGHT.up(function () {
+kd.RIGHT.up(function() {
     releaseControl(get_control_from_keybind("ArrowRight"));
 });
-kd.DOWN.up(function () {
+kd.DOWN.up(function() {
     releaseControl(get_control_from_keybind("ArrowDown"));
 });
 
