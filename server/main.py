@@ -3,7 +3,10 @@ from functools import wraps
 from random import randint
 from classes.robot import Robot
 import json
-from config import robot_register_key, secret_key
+from config import robot_register_key, secret_key, logname
+import logging
+logging.basicConfig(filename=logname, level=logging.DEBUG,
+                    format=f'%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
 app = Flask(__name__)
 app.secret_key = secret_key
 robots = []
@@ -92,6 +95,7 @@ def handle_command(robotId):
     command_log.append(request.json)
     with open('commands.log.json', 'w') as f:
         f.write(json.dumps(command_log))
+    r.heldButtons = []
     for command in commands:
         if not r.pushButton(command):
             return jsonify('{} cannot be pressed for robot {}'.format(command, robotId)), 400
@@ -119,6 +123,8 @@ def get_robots():
         if not deleted_robot:
             break
     return jsonify(robotDicts)
+
+# TODO: Add robot pairing process, instead of hacky system of having a "key"
 
 
 @app.route('/robot', methods=['POST'])
