@@ -38,6 +38,8 @@ class Robot():
         return False
 
     def pushButton(self, button: dict):
+        if button is None:
+            return False
         button = self.checkValidityOfButtonCode(button.get('code'))
         if not button:
             return False
