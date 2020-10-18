@@ -13,7 +13,6 @@ from server.blueprints.robot import robot
 app.register_blueprint(robot)
 logging.info("Registered robot blueprint")
 app.secret_key = secret_key
-robots = []
 
 
 def code_required(f):
@@ -32,14 +31,6 @@ def generate_code(n=6):
     with open('joinCode', 'w') as f:
         f.write(app.config['joinCode'])
     return join_code
-
-
-def load_commands():
-    with open('commands.json', 'r') as f:
-        app.config['commands'] = json.loads(f.read())
-
-
-load_commands()
 
 
 @app.route('/', methods=['GET', 'POST'])
