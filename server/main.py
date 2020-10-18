@@ -91,15 +91,15 @@ def handle_command(robotId):
     r = Robot.get_robot(robots, robotId)
     if r is None:
         return jsonify({'success': False, 'msg': 'No such robot with ID'}), 400
+    # TODO: Add lock checks for robots!
     commands = request.json
     command_log.append(request.json)
     with open('commands.log.json', 'w') as f:
         f.write(json.dumps(command_log))
-    r.heldButtons = []
+    r.heldButtons = [] # We do this, so that in case we are changing direction, we immediately invalidate the previous input
     for command in commands:
         if not r.pushButton(command):
             return jsonify('{} cannot be pressed for robot {}'.format(command, robotId)), 400
-    print("{}:{}".format(robotId, command))
     return jsonify({
         'robot': robotId,
         'command': command,
