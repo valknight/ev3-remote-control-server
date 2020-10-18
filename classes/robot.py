@@ -38,6 +38,7 @@ class Robot():
         return False
 
     def pushButton(self, button: dict):
+        # This first check is done to ensure that if faulty data has been given to us, we just don't even bother
         if button is None:
             return False
         button = self.checkValidityOfButtonCode(button.get('code'))
