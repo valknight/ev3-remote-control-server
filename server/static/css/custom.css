@@ -1,0 +1,36 @@
+.notification-container {
+    position: fixed;
+    z-index: 10;
+    width: 100%;
+    max-width: 100% !important;
+}
+
+@media only screen and (min-width: 768px) {
+    .notification-container {
+        padding-right: 25%;
+        padding-left: 25%
+    }
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    /* bottom = footer height */
+    padding: 25px;
+}
+
+footer {
+    position: absolute;
+    background-color: rgb(246, 246, 246);
+    padding: 20px;
+    color: #363636;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    border-radius: 1em;
+    margin: 1em;
+}
