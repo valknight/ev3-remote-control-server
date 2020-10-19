@@ -1,15 +1,9 @@
 from flask import session, redirect, request, url_for
 from functools import wraps
-from random import randint
-def generate_code(n=6):
-    join_code = ''.join(["{}".format(randint(0, 9))
-                            for num in range(0, n)])
-    print("Join code: {}".format(join_code))
-    with open('joinCode', 'w') as f:
-        f.write(join_code)
-    return join_code
+from server.util.code import generate_joincode
 
-joinCode = generate_code()
+joinCode = generate_joincode()
+
 
 def get_code():
     return joinCode
