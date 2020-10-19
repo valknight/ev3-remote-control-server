@@ -13,7 +13,7 @@ class Lock():
         isActive = self.lastHeardFromClient - time.time() < maxTimeSinceLastRelock
         if not isActive:
             self.key = None
-        return isInactive
+        return isActive
     
     
     def validateLock(self, key: str):
