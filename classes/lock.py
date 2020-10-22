@@ -21,10 +21,6 @@ class Lock():
         self.lastHeardFromClient = time.time()
 
     def validateLock(self, key: str):
-        if key in self.keys is False:
-            print("!!! - Invalid key provided.")
-            print(key)
-            print(self.keys)
         return key in self.keys
 
     def generateLock(self, reset=True):

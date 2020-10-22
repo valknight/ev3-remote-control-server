@@ -24,8 +24,6 @@ def commander(robotId):
         flash('Robot with ID {} is not connected'.format(robotId), 'warning')
         return redirect(url_for('command.selection'))
     if r.isRobotInUse():
-        print(session.get('robotLockKey'))
-        print(r.lock.keys)
         if not r.lock.validateLock(session.get('robotLockKey')):
             flash("Robot already in use by another client", "danger")
             return redirect(url_for("command.selection"))

@@ -15,7 +15,6 @@ robot = Blueprint('robot', __name__, url_prefix='/robot')
 def add_robot():
     data = json.loads(request.json)
     if data.get('robotKey') != robot_register_key:
-        print(data.get('robotKey'))
         return jsonify({
             'success': False,
             'msg': 'Invalid robot registration key'
