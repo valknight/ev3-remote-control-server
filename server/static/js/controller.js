@@ -1,6 +1,18 @@
 var controls = JSON.parse(document.getElementById('x-controls').innerHTML);
 var activeControls = [];
 var robotId = document.getElementById('x-robot-id').innerHTML;
+var clientLatency = document.getElementById('clientLatencyDisplay');
+var robotLatency = document.getElementById('robotLatencyDisplay');
+var lastUpdateOfLatency = new Date();
+var updateFrequencey = 1000;
+var isRefreshing = false;
+
+function refresh() {
+    if (!isRefreshing) {
+        isRefreshing = true;
+        window.location.reload();
+    }
+}
 
 function is_touch_enabled() {
     return ('ontouchstart' in window) ||
@@ -19,20 +31,34 @@ function checkIfAlive() {
                 }
             }
             if (!found_robot) {
-                window.location.reload();
+                reload();
             }
         })
 }
 
 function doControl() {
-    function makeRequest()
-    {
+    function makeRequest() {
+        startTime = new Date();
         fetch(window.location.href, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(activeControls),
+        }).then(function(response) {
+            if (response.status != 200) {
+                reload();
+            }
+            endTime = new Date();
+            if (endTime.getTime() - lastUpdateOfLatency.getTime() > updateFrequencey) {
+                // robot time can be done server side?
+                // measure time between previous request
+                lastUpdateOfLatency = endTime;
+                clientLatency.innerText = endTime.getTime() - startTime.getTime();
+                response.json().then(data => {
+                    robotLatency.innerText = Math.round(data.robotLatency);
+                });
+            }
         });
     }
     kd.tick();

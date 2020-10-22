@@ -19,6 +19,7 @@ class Robot():
         self.heldButtons = []
         self.commandLog = []
         self.lastHeardFromTime = time.time() * 1000
+        self.lastLastHeardFromTime = None
         self.lock = Lock()
 
     @staticmethod
@@ -144,6 +145,7 @@ class Robot():
         }
 
     def alive(self):
+        self.lastLastHeardFromTime = self.lastHeardFromTime
         self.lastHeardFromTime = (time.time() * 1000)
 
     def timeSinceLastConnection(self):

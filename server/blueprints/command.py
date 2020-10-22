@@ -69,4 +69,5 @@ def handle_command(robotId):
     return jsonify({
         'robot': r.toDict(),
         'commands': commands,
-        'sent_to_client': True})
+        'sent_to_client': True,
+        'robotLatency': r.lastHeardFromTime - r.lastLastHeardFromTime})

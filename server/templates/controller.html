@@ -7,16 +7,16 @@
     <div class="dropdown-menu" id="dropdown-menu4" role="menu">
         <div class="dropdown-content">
             <a href="{{ url_for('command.selection') }}" class="dropdown-item has-text-danger-dark">
-                    Disconnect
-                </a>
+                Disconnect
+            </a>
             <hr class="dropdown-divider">
             <div class="dropdown-item">
                 <b>Latency</b>
                 <div>
-                    Client: <span id="robotLatencyDisplay">23</span>ms
+                    Client: <span id="clientLatencyDisplay">--</span>ms
                 </div>
                 <div>
-                    Robot: <span id="robotLatencyDisplay">327</span>ms
+                    Robot: <span id="robotLatencyDisplay">--</span>ms
                 </div>
             </div>
         </div>
@@ -42,6 +42,9 @@
         <div class="dropdown-content">
             <div class="dropdown-item">
                 <p>Group functionality is disabled.</p>
+            </div>
+            <div class="dropdown-item" id="createGroupButton">
+                <button class="button is-small is-fullwidth" disabled>Create group</button>
             </div>
         </div>
     </div>
