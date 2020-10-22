@@ -1,4 +1,4 @@
-from classes.robot import Robot
+from classes.robot import Robot, get_robot
 from config import robot_register_key, default_commands
 import json
 from flask import (
@@ -33,7 +33,7 @@ def add_robot():
             'msg': 'robotName must be included'
         })
     # TODO: Add check if the command data isn't formatted right, and return an error if so
-    r = Robot.get_robot(robotId)
+    r = get_robot(robotId)
     # NOTE: In future, commands will be required from robots - this shim is just to allow for older testing scripts to still function
     commands = data.get('commands', default_commands)
     if not r:

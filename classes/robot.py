@@ -4,6 +4,7 @@ import errno
 import os
 from config import button_timeout, robot_timeout
 from classes.button import Button
+from classes.lock import Lock
 with open('commands.json', 'r') as f:
     default_commands = json.loads(f.read())
 robots = []
@@ -18,13 +19,7 @@ class Robot():
         self.heldButtons = []
         self.commandLog = []
         self.lastHeardFromTime = time.time() * 1000
-
-    @staticmethod
-    def get_robot(robotId: int):
-        for robot in robots:
-            if robot.getRobotId() == robotId and robot.isAlive():
-                return robot
-        return None
+        self.lock = Lock()
 
     @staticmethod
     def add_robot(robot):
@@ -49,10 +44,13 @@ class Robot():
         return robotDicts
 
     def markInUse(self):
-        self.inUse = True
+        if self.isRobotInUse():
+            self.lock.clientHeartbeat()
+            return
+        return self.lock.generateLock(reset=True)
 
-    def releaseRobot(self):
-        self.inUse = False
+    def isRobotInUse(self):
+        return self.lock.checkIfLockActive()
 
     def checkValidityOfButtonCode(self, buttonCode: str):
         for button in self.commands:
@@ -153,3 +151,14 @@ class Robot():
 
     def isAlive(self):
         return self.timeSinceLastConnection() < robot_timeout
+
+
+def get_robot(robotId: int) -> Robot:
+    """
+    @type robotId: the ID of the robot you wish to retrieve
+    @return robot: the found robot (if robot was not found, returns None)
+    """
+    for robot in robots:
+        if robot.getRobotId() == robotId and robot.isAlive():
+            return robot
+    return None

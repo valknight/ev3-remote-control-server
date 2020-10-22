@@ -25,8 +25,8 @@ function checkIfAlive() {
 }
 
 function doControl() {
-    kd.tick();
-    activeControls.forEach(function(item, index) {
+    function makeRequest()
+    {
         fetch(window.location.href, {
             method: 'POST',
             headers: {
@@ -34,7 +34,9 @@ function doControl() {
             },
             body: JSON.stringify(activeControls),
         });
-    })
+    }
+    kd.tick();
+    makeRequest();
 }
 
 function get_control_from_keybind(keybind) {
@@ -122,7 +124,29 @@ kd.RIGHT.up(function() {
 kd.DOWN.up(function() {
     releaseControl(get_control_from_keybind("ArrowDown"));
 });
-
+// robot data example
+/*
+{
+	"robot": {
+		"buttons": [],
+		"commands": [
+			{
+				"binding": "a",
+				"code": "noBinding",
+				"name": "No bindings!"
+			}
+		],
+		"coords": [
+			0,
+			0,
+			0
+		],
+		"id": 9001,
+		"name": "Development Machine 💻",
+		"timeSinceLastConnection": 15.453369140625
+	}
+}
+ */
 var controlPusher = setInterval(doControl, 20);
 // this is run on a seperate interval, as it's not necessary to be doing this check as frequently
 var checkIfAliveInterval = setInterval(checkIfAlive, 500);
