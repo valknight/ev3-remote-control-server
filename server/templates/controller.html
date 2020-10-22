@@ -1,12 +1,11 @@
 {% extends "base.html" %} {% block title %}Robot Controller{% endblock %} {% block bar %}
-<div class="dropdown is-hoverable top-bar has-background-success-light">
+<div class="dropdown is-hoverable top-bar has-background-success-dark">
     <div class="dropdown-trigger">
-        <span><i class="has-text-success-dark fas fa-wifi"></i> {{robotName}}</span>
+        <span>{{robotName}}</span>
 
     </div>
     <div class="dropdown-menu" id="dropdown-menu4" role="menu">
         <div class="dropdown-content">
-            <hr class="dropdown-divider">
             <a href="{{ url_for('command.selection') }}" class="dropdown-item has-text-danger-dark">
                     Disconnect
                 </a>
@@ -23,9 +22,9 @@
         </div>
     </div>
 </div>
-<div class="dropdown is-hoverable top-bar has-background-warning-light">
+<div class="dropdown is-hoverable top-bar has-background-warning-dark">
     <div class="dropdown-trigger">
-        <span><i class="has-text-warning-dark fas fa-bolt"></i> 6.4V </span>
+        <span><i class="has-text-warning-light fas fa-bolt"></i> 6.4V </span>
     </div>
     <div class="dropdown-menu" id="" role="menu">
         <div class="dropdown-content">

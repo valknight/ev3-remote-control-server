@@ -35,23 +35,45 @@ footer {
     margin: 1em;
 }
 
-.top-bar-wrapper {
-    position: fixed;
-    top: 0;
-    left: 0;
-    padding: 0.5em;
-    width: 100%;
-    border: 0px;
-    border-bottom: 2px;
-    box-sizing: border-box;
+.dropdown-content {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(5px);
+}
+
+.top-bar {
+    padding: 10px;
+    margin-left: 10px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    float: center;
+    border-radius: 6px;
+    background-color: #363636;
+    color: #FFF;
+    border: 2px;
+    border-bottom: 5px;
     border-style: solid;
     border-color: black;
 }
 
-.top-bar {
-    border: 2px;
-    border-color: black;
+.navbar-menu {
+    border: 0px;
+    border-bottom: 5px;
     border-style: solid;
-    padding: 10px;
-    float: center;
+    border-color: black;
+    width: 100%;
+    padding: 5px;
+    background-color: #5a5a5a;
+}
+
+@media screen and (max-width:1023px) {
+    .navbar-menu {
+        background-color: #5a5a5a;
+        box-shadow: 0 0px 0px rgba(10, 10, 10, .1) !important;
+        padding: 5px;
+    }
+}
+
+body {
+    width: 100%;
+    padding: 0px;
 }
