@@ -1,14 +1,57 @@
-{% extends "base.html" %}
-{% block title %}Robot Controller{% endblock %}
-{% block content %}
+{% extends "base.html" %} {% block title %}Robot Controller{% endblock %} {% block bar %}
+<div class="dropdown is-hoverable top-bar has-background-success-light">
+    <div class="dropdown-trigger">
+        <span><i class="has-text-success-dark fas fa-wifi"></i> {{robotName}}</span>
+
+    </div>
+    <div class="dropdown-menu" id="dropdown-menu4" role="menu">
+        <div class="dropdown-content">
+            <hr class="dropdown-divider">
+            <a href="{{ url_for('command.selection') }}" class="dropdown-item has-text-danger-dark">
+                    Disconnect
+                </a>
+            <hr class="dropdown-divider">
+            <div class="dropdown-item">
+                <b>Latency</b>
+                <div>
+                    Client: <span id="robotLatencyDisplay">23</span>ms
+                </div>
+                <div>
+                    Robot: <span id="robotLatencyDisplay">327</span>ms
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="dropdown is-hoverable top-bar has-background-warning-light">
+    <div class="dropdown-trigger">
+        <span><i class="has-text-warning-dark fas fa-bolt"></i> 6.4V </span>
+    </div>
+    <div class="dropdown-menu" id="" role="menu">
+        <div class="dropdown-content">
+            <div class="dropdown-item">
+                <p>EV3dev shuts down at 5V - <b>The drop from 6V to 5V is faster than you expect</b></p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="disabled dropdown is-hoverable top-bar">
+    <div class="dropdown-trigger">
+        <span><i class="fas fa-users"></i> Not in Group</span>
+    </div>
+    <div class="dropdown-menu" id="" role="menu">
+        <div class="dropdown-content">
+            <div class="dropdown-item">
+                <p>Group functionality is disabled.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}{% block content %}
 <x-robot-id style="display: none;" id="x-robot-id">{{ robotId }}</x-robot-id>
 <x-controls style="display: none;" id='x-controls'>
     {{commandsJ}}</x-controls>
 <section class="section" style="text-align: center;">
-
-    <h1 class="title">
-        Robot: {{ robotName }}
-    </h1>
     {% include 'includes/controls.html' %}
 </section>
 <script src="/static/js/controller.js"></script>

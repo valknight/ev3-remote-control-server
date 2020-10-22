@@ -20,7 +20,16 @@
             <button class="delete"></button> {{message}}
         </div>
     </div>
-    {% endfor %} {% endwith %} {% include 'includes/header.html' %} {% block content %} {% endblock %} {% include 'includes/footer.html' %}
+    {% endfor %} {% endwith %}
+    <div class="top-bar-wrapper">
+        <div class="dropdown is-hoverable top-bar">
+            <div class="dropdown-trigger">
+                <span> 10:10 </span>
+            </div>
+        </div>
+        {% block bar %}{% endblock %}
+    </div>
+    {% include 'includes/header.html' %} {% block content %} {% endblock %} {% include 'includes/footer.html' %}
     <script src="/static/js/notification.js"></script>
 </body>
 

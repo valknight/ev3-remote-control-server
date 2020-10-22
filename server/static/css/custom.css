@@ -34,3 +34,24 @@ footer {
     border-radius: 1em;
     margin: 1em;
 }
+
+.top-bar-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 0.5em;
+    width: 100%;
+    border: 0px;
+    border-bottom: 2px;
+    box-sizing: border-box;
+    border-style: solid;
+    border-color: black;
+}
+
+.top-bar {
+    border: 2px;
+    border-color: black;
+    border-style: solid;
+    padding: 10px;
+    float: center;
+}
