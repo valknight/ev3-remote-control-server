@@ -55,6 +55,22 @@ footer {
     border-color: black;
 }
 
+.button {
+    border-radius: 6px;
+    border: 2px;
+    border-bottom: 5px;
+    border-style: solid;
+    border-color: black !important;
+}
+
+.button:hover {
+    border-color: grey !important;
+}
+
+.button:active {
+    border-color: white !important;
+}
+
 .navbar-menu {
     border: 0px;
     border-bottom: 5px;
