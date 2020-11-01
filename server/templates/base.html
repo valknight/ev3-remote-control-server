@@ -22,16 +22,18 @@
     </div>
     {% endfor %} {% endwith %}
     <div id="navbarBasicExample" class="navbar-menu is-active">
-        <div class="dropdown is-hoverable top-bar">
+        <div class="dropdown is-hoverable top-bar has-background-dark">
             <div class="dropdown-trigger">
-                <span> 10:10 </span>
+                <span id="menuBarClockText"> 10:10 </span>
             </div>
         </div>
         {% block bar %}{% endblock %}
     </div>
     </div>
     {% include 'includes/header.html' %} {% block content %} {% endblock %} {% include 'includes/footer.html' %}
+    <script src="/static/js/main.js"></script>
     <script src="/static/js/notification.js"></script>
+    {% block extra_scripts %} {% endblock %}
 </body>
 
 </html>
