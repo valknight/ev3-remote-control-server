@@ -141,7 +141,8 @@ class Robot():
             'commands': self.getCommands(),
             'buttons': self.getHeldButtons(),
             'timeSinceLastConnection': self.timeSinceLastConnection(),
-            'coords': self.getCoords()
+            'coords': self.getCoords(),
+            'inUse': self.isRobotInUse()
         }
 
     def alive(self):
