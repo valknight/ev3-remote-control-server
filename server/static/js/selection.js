@@ -2,9 +2,14 @@ fetch('/static/templates/robotList.mustache')
     .then((response) => response.text())
     .then((template) => {
         function handleRobotData(robots) {
-            function renderTemplate(robotId, robotName) {
+            function renderTemplate(robotId, robotName, locked) {
                 var list = document.getElementById("robotSelectionList");
-                var rendered = Mustache.render(template, { name: robotName, id: robotId });
+                let activeText = "is-active";
+                if (locked) {
+                    activeText = ""
+                    robotName = robotName + " | In Use";
+                }
+                var rendered = Mustache.render(template, { name: robotName, id: robotId, active: activeText });
                 list.innerHTML += (rendered);
             }
             document.getElementById("robotSelectionList").querySelectorAll('.robot-list-item').forEach(e => e.remove());
@@ -16,7 +21,7 @@ fetch('/static/templates/robotList.mustache')
                 document.getElementById("noRobotFound").style.display = "none";
             }
             for (robot of robots) {
-                renderTemplate(robot['id'], robot['name']);
+                renderTemplate(robot['id'], robot['name'], robot['inUse']);
             }
         }
 

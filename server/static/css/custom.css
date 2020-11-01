@@ -98,3 +98,7 @@ body {
     width: 100%;
     padding: 0px;
 }
+
+.panel.is-dark .panel-block.is-active .panel-icon {
+    color: #007C3B;
+}
