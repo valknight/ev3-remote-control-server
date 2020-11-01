@@ -61,14 +61,19 @@ footer {
     border-bottom: 5px;
     border-style: solid;
     border-color: black !important;
+    background-color: rgba(255, 255, 255, 1);
+    transition: 100ms linear;
 }
 
 .button:hover {
-    border-color: grey !important;
+    background-color: rgba(255, 255, 255, 0.9);
+    transition: 100ms linear;
 }
 
 .button:active {
-    border-color: white !important;
+    color: white;
+    background-color: #363636;
+    transition: 100ms linear;
 }
 
 .navbar-menu {

@@ -1,7 +1,6 @@
 <div style="display:flex;justify-content:center;align-items:center;">
     <div id="commands" class="buttons">
         {% for command in commands %}
-            <button type="button" command="{{command['code']}}" class="button is-large is-dark is-outlined is-fullwidth">{{command['name']}}</button>
-        {% endfor %}
+        <button type="button" command="{{command['code']}}" class="button is-large is-fullwidth">{{command['name']}}</button> {% endfor %}
     </div>
 </div>
